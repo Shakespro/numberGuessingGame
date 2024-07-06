@@ -41,12 +41,13 @@ play_game() {
   done
   echo "You guessed it in $number_of_guesses tries. The secret number was $secret_number. Nice job!"
   # Update database with results
-  update_stats $number_of_guesses
+  update_stats $number_of_guesses $username
 }
 
 # Function to update user statistics in the database
 update_stats() {
   local guesses=$1
+  local username=$2
   update_result=$($PSQL "UPDATE users SET games_played = games_played + 1 WHERE username = '$username'")
   current_best=$($PSQL "SELECT best_game FROM users WHERE username = '$username'")
 
@@ -56,6 +57,5 @@ update_stats() {
 }
 
 # Main script execution
-# Finally done!
 get_username
 play_game
